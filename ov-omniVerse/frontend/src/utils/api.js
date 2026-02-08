@@ -1,8 +1,17 @@
-// frontend/src/utils/api.js
 import axios from 'axios';
 
-const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:5000/api'
+const API = axios.create({
+    // URL Backend Koyeb Anda
+    baseURL: 'https://cooing-mireille-omniverse-502f0d60.koyeb.app/api',
 });
 
-export default api;
+// Menambahkan token ke header setiap request jika user sudah login
+API.interceptors.request.use((req) => {
+    const token = localStorage.getItem('token');
+    if (token) {
+        req.headers.Authorization = `Bearer ${token}`;
+    }
+    return req;
+});
+
+export default API;
