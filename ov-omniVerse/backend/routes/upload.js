@@ -1,10 +1,11 @@
-// backend/routes/upload.js
-const express = require('express');
-const router = express.Router();
 const multer = require('multer');
-const upload = multer({ dest: 'uploads/' });
-const { uploadImage } = require('../controllers/uploadController');
 
-router.post('/', upload.single('file'), uploadImage);
+const storage = multer.diskStorage({...});
+const upload = multer({
+    storage: storage,
+    limits: { fileSize: 10 * 1024 * 1024 } // Batas 10MB
+});
 
-module.exports = router;
+router.post('/upload', upload.single('image'), (req, res) => {
+    res.json({ imageUrl: `/uploads/${req.file.filename}` });
+});
