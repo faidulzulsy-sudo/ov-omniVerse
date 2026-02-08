@@ -8,7 +8,7 @@ import Register from './pages/Register'
 import Profile from './pages/Profile'
 import Chat from './pages/Chat'
 import Friends from './pages/Friends'
-import PrivateRoute from './components/Common/PrivateRoute'
+import PrivateRoute from './components/Common/PrivateRoute';
 
 function App() {
   return (
