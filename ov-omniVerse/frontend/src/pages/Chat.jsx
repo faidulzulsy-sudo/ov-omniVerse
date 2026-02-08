@@ -1,31 +1,35 @@
-import React, { useEffect, useState } from 'react';
-import io from 'socket.io-client';
-
-const socket = io('https://cooing-mireille-omniverse-502f0d60.koyeb.app');
+import React, { useState, useEffect } from 'react';
+import { motion } from 'framer-motion'; // Untuk animasi
+import Sidebar from '../components/Common/Sidebar';
+import ChatWindow from '../components/Chat/ChatWindow';
 
 export default function Chat() {
-    const [message, setMessage] = useState('');
-    const [messages, setMessages] = useState([]);
-
-    useEffect(() => {
-        socket.on('receiveMessage', (data) => {
-            setMessages((prev) => [...prev, data]);
-        });
-    }, []);
-
-    const sendMessage = () => {
-        socket.emit('sendMessage', { text: message });
-        setMessage('');
-    };
-
     return (
-        <div style={{ padding: '20px' }}>
-            <h2>Global Chat</h2>
-            <div style={{ border: '1px solid #ccc', height: '300px', overflowY: 'scroll', marginBottom: '10px' }}>
-                {messages.map((msg, i) => <p key={i}>{msg.text}</p>)}
-            </div>
-            <input value={message} onChange={(e) => setMessage(e.target.value)} placeholder="Ketik pesan..." />
-            <button onClick={sendMessage}>Kirim</button>
+        <div style={appLayout}>
+            {/* Sidebar Kiri - Daftar Teman & Grup */}
+            <Sidebar />
+
+            {/* Area Chat Utama */}
+            <motion.div 
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                style={chatArea}
+            >
+                <ChatWindow />
+            </motion.div>
         </div>
     );
 }
+
+const appLayout = {
+    display: 'flex',
+    height: '100vh',
+    backgroundColor: '#1e1e2e', // Tema Gelap Modern
+    color: '#fff'
+};
+
+const chatArea = {
+    flex: 1,
+    display: 'flex',
+    flexDirection: 'column'
+};
